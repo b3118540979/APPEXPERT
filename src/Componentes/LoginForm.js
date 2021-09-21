@@ -3,12 +3,13 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Icon, Input, Button, Divider } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { validaremail } from "../Utils/Utils";
-import { validarsesion } from "../Utils/Acciones";
+//import { validarsesion, cerrarsesion } from "../Utils/Acciones";
 import { isEmpty } from "lodash";
-// import Loading from "../Componentes/Loading";
+
 import * as firebase from "firebase";
 // import * as GoogleSignIn from "expo-google-sign-in";
 // import * as Facebook from "expo-facebook";
+import Loading from "./Loading";
 
 export default function LoginForm(props) {
   const { toastRef } = props;
@@ -18,7 +19,8 @@ export default function LoginForm(props) {
   const [loading, setloading] = useState(false);
   const navigation = useNavigation();
 
-  validarsesion();
+  //validarsesion();
+  //cerrarsesion();
 
   const iniciarsesion = () => {
     if (isEmpty(email) || isEmpty(password)) {
@@ -32,10 +34,10 @@ export default function LoginForm(props) {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((response) => {
-          console.log("Todo bien");
-          // setloading(false);
-          // toastRef.current.show("Ha iniciado sesión exitosamente");
-          // console.log(firebase.auth().currentUser);
+          //console.log("Todo bien");
+          setloading(false);
+          toastRef.current.show("Ha iniciado sesión exitosamente");
+          console.log(firebase.auth().currentUser);
         })
         .catch((err) => {
           setloading(false);
@@ -141,7 +143,7 @@ export default function LoginForm(props) {
           />
         </TouchableOpacity>
       </View>
-      {/* <Loading isVisible={loading} text="Favor Espere" /> */}
+      <Loading isVisible={loading} text="Favor Espere" />
     </View>
   );
   /*********LOGICA DE GOOGLE***********************************/

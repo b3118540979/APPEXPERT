@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { validaremail } from "../Utils/Utils";
 import { isEmpty, size } from "lodash";
 import * as firebase from "firebase";
+import Loading from "./Loading";
 
 export default function RegisterForm(props) {
   const { toastRef } = props;
@@ -12,6 +13,8 @@ export default function RegisterForm(props) {
   const [password, setpassword] = useState("");
   const [repetirpassword, setrepetirpassword] = useState("");
   const navigation = useNavigation();
+  const [show, setshow] = useState(false);
+  const [loading, setloading] = useState(false);
 
   function crearcuenta() {
     if (isEmpty(email) || isEmpty(password) || isEmpty(repetirpassword)) {
@@ -24,6 +27,21 @@ export default function RegisterForm(props) {
       toastRef.current.show(
         "Las contraseñas deben tener al menos 6 caracteres"
       );
+    } else {
+      setloading(true);
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((response) => {
+          toastRef.current.show("Se ha creado el usuario correctamente");
+          setloading(false);
+        })
+        .catch((err) => {
+          setloading(false);
+          toastRef.current.show(
+            "Ha ocurrido un error o puede que este Usuario ya esté registrado"
+          );
+        });
     }
   }
   return (
@@ -63,14 +81,14 @@ export default function RegisterForm(props) {
         }}
         rightIcon={{
           type: "material-community",
-          name: "eye-outline",
+          name: show ? "eye-off-outline" : "eye-outline",
           color: "#128C7E",
-          onPress: () => alert("Hola"),
+          onPress: () => setshow(!show),
         }}
         onChangeText={(text) => {
           setpassword(text);
         }}
-        secureTextEntry={true}
+        secureTextEntry={!show}
         value={password}
       />
       <Input
@@ -83,14 +101,14 @@ export default function RegisterForm(props) {
         }}
         rightIcon={{
           type: "material-community",
-          name: "eye-outline",
+          name: show ? "eye-off-outline" : "eye-outline",
           color: "#128C7E",
-          onPress: () => alert("Hola"),
+          onPress: () => setshow(!show),
         }}
         onChangeText={(text) => {
           setrepetirpassword(text);
         }}
-        secureTextEntry={true}
+        secureTextEntry={!show}
         value={repetirpassword}
       />
       <Button
@@ -105,6 +123,7 @@ export default function RegisterForm(props) {
         buttonStyle={{ backgroundColor: "#128C7E" }}
         onPress={() => navigation.goBack()}
       />
+      <Loading isVisible={loading} text="Favor, espere..." />
     </View>
   );
 }

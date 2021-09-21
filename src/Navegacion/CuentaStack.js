@@ -1,4 +1,5 @@
 import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import ConfirmarNumero from "../Pantallas/Cuenta/ConfirmarNumero";
@@ -8,25 +9,27 @@ const Stack = createStackNavigator();
 
 export default function CuentaStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        component={EnviarConfirmacion}
-        name="enviar-confirmacion"
-        options={{
-          title: "Confirma tu numero de telefono",
-          headerStyle: { backgroundColor: "#128C7E" },
-          headerTintColor: "#fff",
-        }}
-      />
-      <Stack.Screen
-        component={ConfirmarNumero}
-        name="confirmar-movil"
-        options={{
-          title: "Confirmar Numero",
-          headerStyle: { backgroundColor: "#128C7E" },
-          headerTintColor: "#fff",
-        }}
-      />
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          component={EnviarConfirmacion}
+          name="enviar-confirmacion"
+          options={{
+            title: "Confirma tu numero de telefono",
+            headerStyle: { backgroundColor: "#128C7E" },
+            headerTintColor: "#fff",
+          }}
+        />
+        <Stack.Screen
+          component={ConfirmarNumero}
+          name="confirmar-movil"
+          options={{
+            title: "Confirmar Numero",
+            headerStyle: { backgroundColor: "#128C7E" },
+            headerTintColor: "#fff",
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
